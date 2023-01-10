@@ -1,0 +1,1 @@
+const gmpApiKey = String.fromEnvironment('GMP_KEY');
