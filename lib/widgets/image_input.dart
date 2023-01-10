@@ -17,20 +17,18 @@ class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
 
   Future<void> _takePicture() async {
-    // TO:DO
-    // fix passing [savedImage] to [add_place_screen]
-    // 
     final picker = ImagePicker();
     final imageFile =
         await picker.pickImage(source: ImageSource.camera, maxWidth: 600);
+    if (imageFile == null){
+      return;
+    }
     setState(() {
-      if (imageFile != null) {
         _storedImage = File(imageFile.path);
-      }
     });
     final appDir = await syspath.getApplicationDocumentsDirectory();
-    final fileName = path.basename(imageFile!.path);
-    final savedImage = await imageFile.saveTo('${appDir.path}/$fileName');
+    final fileName = path.basename(imageFile.path);
+    final savedImage = await _storedImage!.copy('${appDir.path}/$fileName');
     widget.onSelectImage(savedImage);
   }
 
